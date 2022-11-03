@@ -23,6 +23,7 @@ const kittenData_3 = {
 
 const kittenDataList = [kittenData_1, kittenData_2, kittenData_3];
 
+
 //2. Crear listado de gatitos
 //Modifica la función renderKitten() para que reciba un listado como parámetro.
 function renderKitten(kittenData) {

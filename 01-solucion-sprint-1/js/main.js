@@ -80,18 +80,28 @@ function handleClickNewCatForm(event) {
     }
 }
 //Adicionar nuevo gatito
+//Ejercicio 1 aarays bucles 2
 function addNewKitten(event) {
     event.preventDefault();
+    debugger;
     const valueDesc = inputDesc.value;
     const valuePhoto = inputPhoto.value;
     const valueName = inputName.value;
+    const newKittenDataObject = {
+        url:valuePhoto ,
+        name:valueName,
+        race:"",
+        desc:valueDesc,
+       };
     if (valueDesc === "" && valuePhoto === "" && valueName === "") {
         labelMesageError.innerHTML = "Debe rellenar todos los valores";
     } else {
         if (valueDesc !== "" && valuePhoto !== "" && valueName !== "") {
-            labelMesageError.innerHTML = "";
+            labelMesageError.innerHTML =  "Mola! Un nuevo gatito en Adalab!";
         }
     }
+    kittenDataList.push(newKittenDataObject);
+    renderKittenList(kittenDataList);
 }
 //Cancelar la búsqueda de un gatito
 function cancelNewKitten(event) {
