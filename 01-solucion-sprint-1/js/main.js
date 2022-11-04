@@ -13,7 +13,7 @@ const inputName = document.querySelector('.js-input-name');
 const linkNewFormElememt = document.querySelector('.js-button-new-form');
 const labelMesageError = document.querySelector('.js-label-error');
 const input_search_desc = document.querySelector('.js_in_search_desc');
-
+const input_search_race = document.querySelector ('.js_in_search_race');
 
 //Objetos con cada gatito
 const kittenData_1 = {
@@ -115,13 +115,28 @@ function cancelNewKitten(event) {
 //Filtrar por descripción
 function filterKitten(event) {
     event.preventDefault();
-    const descrSearchText = input_search_desc.value;
-    listElement.innerHTML = "";
-    for (const kittenItem of kittenDataList) {
-        if (kittenItem.desc.includes(descrSearchText)) {
-            listElement.innerHTML += renderKitten(kittenItem);
-        }
-    }
+    //Modifica el código:
+    //Haz un filter sobre el listado de gatitos
+    //Vuelve a pintar el listado de gatitos filtrados en el HTML.
+    const inputDesc = input_search_desc.value;
+    const inputRace = input_search_race.value;
+    const filteredDesc = kittenDataList
+    .filter((kittenDesc) => kittenDesc.desc.includes(inputDesc))
+    .filter((kittenRace) => kittenRace.race.includes(inputRace));
+    console.log(filteredDesc)
+    //nos faltaría pintarlo y la raza
+    // listElement.innerHTML = renderKitten(filteredDesc);
+    
+  
+    //este es el bucle antes de crear un método funcional de un array ,filter
+    // const descrSearchText = input_search_desc.value;
+    // listElement.innerHTML = "";
+    // for (const kittenItem of kittenDataList) {
+    //     if (kittenItem.desc.includes(descrSearchText)) {
+    //         listElement.innerHTML += renderKitten(kittenItem);
+    //     }
+    // }
+    
 }
 
 //Mostrar el litado de gatitos en ell HTML
