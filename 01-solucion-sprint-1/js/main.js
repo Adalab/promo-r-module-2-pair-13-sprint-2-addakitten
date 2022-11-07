@@ -35,7 +35,7 @@ const kittenData_3 = {
     race: "British Shorthair",
 };
 
-const kittenDataList = [kittenData_1, kittenData_2, kittenData_3];
+//const kittenDataList = [kittenData_1, kittenData_2, kittenData_3];
 
 //Funciones
 function renderKitten(kittenData) {
@@ -126,21 +126,33 @@ function filterKitten(event) {
     renderKittenList(filteredDesc);
     //si le quitamos el listElement.innerHTML =, funciona
     // listElement.innerHTML = renderKitten(filteredDesc);
-    
-  
-    //este es el bucle antes de crear un método funcional de un array ,filter
-    // const descrSearchText = input_search_desc.value;
-    // listElement.innerHTML = "";
-    // for (const kittenItem of kittenDataList) {
-    //     if (kittenItem.desc.includes(descrSearchText)) {
-    //         listElement.innerHTML += renderKitten(kittenItem);
-    //     }
-    // }
-    
 }
 
 //Mostrar el litado de gatitos en ell HTML
-renderKittenList(kittenDataList);
+//renderKittenList(kittenDataList);
+
+
+//Peticiones al servidor 
+const GITHUB_USER = '<BarbaraGB1>';
+const SERVER_URL = `https://dev.adalab.es/api/kittens/${GITHUB_USER}`;
+let kittenDataList =[];
+debugger;
+fetch(SERVER_URL, {
+    method: 'GET',
+    headers: {'Content-Type': 'application/json'},
+    }).then(response => response.json())
+  .then(data => {
+    console.log(data)
+    kittenDataList = data.results
+    console.log(kittenDataList)
+    renderKittenList(kittenDataList);
+   }
+
+
+  )
+
+  //Completa el código;
+
 
 //Eventos
 linkNewFormElememt.addEventListener("click", handleClickNewCatForm);
