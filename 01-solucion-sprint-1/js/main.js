@@ -123,8 +123,8 @@ function filterKitten(event) {
     const filteredDesc = kittenDataList
     .filter((kittenDesc) => kittenDesc.desc.includes(inputDesc))
     .filter((kittenRace) => kittenRace.race.includes(inputRace));
-    console.log(filteredDesc)
-    //nos faltaría pintarlo y la raza
+    renderKittenList(filteredDesc);
+    //si le quitamos el listElement.innerHTML =, funciona
     // listElement.innerHTML = renderKitten(filteredDesc);
     
   
