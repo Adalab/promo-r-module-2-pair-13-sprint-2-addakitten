@@ -10,30 +10,31 @@ const buttonCancelForm = document.querySelector('.js-btn-cancel');
 const inputDesc = document.querySelector('.js-input-desc');
 const inputPhoto = document.querySelector('.js-input-photo');
 const inputName = document.querySelector('.js-input-name');
+const inputRace = document.querySelector('.js-input-race');
 const linkNewFormElememt = document.querySelector('.js-button-new-form');
 const labelMesageError = document.querySelector('.js-label-error');
 const input_search_desc = document.querySelector('.js_in_search_desc');
 const input_search_race = document.querySelector ('.js_in_search_race');
 
 //Objetos con cada gatito
-const kittenData_1 = {
-    image: "https://ychef.files.bbci.co.uk/976x549/p07ryyyj.jpg",
-    name: "Anastacio",
-    desc: "Ruiseño, juguetón, le guta estar tranquilo y que nadie le moleste. Es una maravilla acariciarle!",
-    race: "British Shorthair",
-};
-const kittenData_2 = {
-    image: "https://media-cldnry.s-nbcnews.com/image/upload/t_nbcnews-fp-1200-630,f_auto,q_auto:best/newscms/2019_39/3021711/190923-cat-pet-stock-cs-1052a.jpg",
-    name: "Fiona",
-    desc: "Juguetón, le guta estar tranquilo y que nadie le moleste. Es una maravilla acariciarle!",
-    race: "British Shorthair",
-};
-const kittenData_3 = {
-    image: "https://images.emedicinehealth.com/images/article/main_image/cat-scratch-disease.jpg",
-    name: "Cielo",
-    desc: "Ruiseño, juguetón, le guta estar tranquilo y que nadie le moleste. Es una maravilla acariciarle!",
-    race: "British Shorthair",
-};
+// const kittenData_1 = {
+//     image: "https://ychef.files.bbci.co.uk/976x549/p07ryyyj.jpg",
+//     name: "Anastacio",
+//     desc: "Ruiseño, juguetón, le guta estar tranquilo y que nadie le moleste. Es una maravilla acariciarle!",
+//     race: "British Shorthair",
+// };
+// const kittenData_2 = {
+//     image: "https://media-cldnry.s-nbcnews.com/image/upload/t_nbcnews-fp-1200-630,f_auto,q_auto:best/newscms/2019_39/3021711/190923-cat-pet-stock-cs-1052a.jpg",
+//     name: "Fiona",
+//     desc: "Juguetón, le guta estar tranquilo y que nadie le moleste. Es una maravilla acariciarle!",
+//     race: "British Shorthair",
+// };
+// const kittenData_3 = {
+//     image: "https://images.emedicinehealth.com/images/article/main_image/cat-scratch-disease.jpg",
+//     name: "Cielo",
+//     desc: "Ruiseño, juguetón, le guta estar tranquilo y que nadie le moleste. Es una maravilla acariciarle!",
+//     race: "British Shorthair",
+// };
 
 //const kittenDataList = [kittenData_1, kittenData_2, kittenData_3];
 
@@ -82,27 +83,53 @@ function handleClickNewCatForm(event) {
 }
 //Adicionar nuevo gatito
 //Ejercicio 1 aarays bucles 2
+let gato = {};
 function addNewKitten(event) {
     event.preventDefault();
- 
-    const valueDesc = inputDesc.value;
-    const valuePhoto = inputPhoto.value;
-    const valueName = inputName.value;
-    const newKittenDataObject = {
-        url:valuePhoto ,
-        name:valueName,
-        race:"",
-        desc:valueDesc,
-       };
-    if (valueDesc === "" && valuePhoto === "" && valueName === "") {
+    debugger;
+        //obtener la información de los gatitos del formulario
+        const newImage = inputPhoto.value;
+        const newDescription = inputDesc.value;
+        const newName = inputName.value;
+        const newRace = inputRace.value;
+        //nuevo objeto con la info del gatito
+        const newKittenDataObject = {
+        image: newImage,
+        name: newName,
+        desc: newDescription,
+        race: newRace,
+        };
+    if (newDescription === "" &&  newImage === "" && newName === "") {
         labelMesageError.innerHTML = "Debe rellenar todos los valores";
     } else {
-        if (valueDesc !== "" && valuePhoto !== "" && valueName !== "") {
+        if (newDescription !== "" && newImage !== "" && newName  !== "") {
             labelMesageError.innerHTML =  "Mola! Un nuevo gatito en Adalab!";
         }
+
     }
     kittenDataList.push(newKittenDataObject);
     renderKittenList(kittenDataList);
+  //peticion mandar gatito  
+fetch(`https://dev.adalab.es/api/kittens/${GITHUB_USER}`, {
+  method: 'POST',
+  headers: {'Content-Type': 'application/json'},
+  body: JSON.stringify(newKittenDataObject),
+})
+  .then((response) => response.json())
+  .then((data) => {
+    if (data.success) {
+       // localStorage
+    
+      //Completa y/o modifica el código:
+      //Agrega el nuevo gatito al listado
+      //Guarda el listado actualizado en el local stoarge
+      //Visualiza nuevamente el listado de gatitos
+      //Limpia los valores de cada input
+    } else {
+      //muestra un mensaje de error.
+    }
+  });
+
 }
 //Cancelar la búsqueda de un gatito
 function cancelNewKitten(event) {
@@ -132,12 +159,17 @@ function filterKitten(event) {
 //Mostrar el litado de gatitos en ell HTML
 //renderKittenList(kittenDataList);
 
+const kittenListStored = JSON.parse(localStorage.getItem('kittensList'));
 
-//Peticiones al servidor 
-const GITHUB_USER = '<BarbaraGB1>';
+const GITHUB_USER = 'BarbaraGB1';
 const SERVER_URL = `https://dev.adalab.es/api/kittens/${GITHUB_USER}`;
 let kittenDataList =[];
-
+//Peticiones al servidor 
+if (kittenListStored !== null){
+    kittenDataList = kittenListStored;
+    renderKittenList(kittenDataList);
+}
+else{ 
 fetch(SERVER_URL, {
     method: 'GET',
     headers: {'Content-Type': 'application/json'},
@@ -147,12 +179,10 @@ fetch(SERVER_URL, {
     kittenDataList = data.results
     console.log(kittenDataList)
     renderKittenList(kittenDataList);
+    localStorage.setItem('kittensList', JSON.stringify( kittenDataList));
    }
-
-
   )
-
-  //Completa el código;
+}
 
 
 //Eventos
