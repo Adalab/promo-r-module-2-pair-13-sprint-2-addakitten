@@ -39,6 +39,7 @@ const kittenData_3 = {
 
 //Funciones
 function renderKitten(kittenData) {
+ 
     const kitten = `<li class="card">
     <article>
       <img
@@ -83,7 +84,7 @@ function handleClickNewCatForm(event) {
 //Ejercicio 1 aarays bucles 2
 function addNewKitten(event) {
     event.preventDefault();
-    debugger;
+ 
     const valueDesc = inputDesc.value;
     const valuePhoto = inputPhoto.value;
     const valueName = inputName.value;
@@ -136,7 +137,7 @@ function filterKitten(event) {
 const GITHUB_USER = '<BarbaraGB1>';
 const SERVER_URL = `https://dev.adalab.es/api/kittens/${GITHUB_USER}`;
 let kittenDataList =[];
-debugger;
+
 fetch(SERVER_URL, {
     method: 'GET',
     headers: {'Content-Type': 'application/json'},
