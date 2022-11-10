@@ -84,7 +84,7 @@ function handleClickNewCatForm(event) {
 //Ejercicio 1 aarays bucles 2
 function addNewKitten(event) {
     event.preventDefault();
-    debugger;
+    
         //obtener la información de los gatitos del formulario
         const newImage = inputPhoto.value;
         const newDescription = inputDesc.value;
@@ -97,18 +97,42 @@ function addNewKitten(event) {
         desc: newDescription,
         race: newRace,
         };
-    if (valueDesc === "" && valuePhoto === "" && valueName === "") {
+    if (newDescription === "" && newImage === "" && newName === "") {
         labelMesageError.innerHTML = "Debe rellenar todos los valores";
     } else {
-        if (valueDesc !== "" && valuePhoto !== "" && valueName !== "") {
+        if (newDescription !== "" && newImage !== "" && newName !== "") {
             labelMesageError.innerHTML =  "Mola! Un nuevo gatito en Adalab!";
         }
     }
-    kittenDataList.push(newKittenDataObject);
-    renderKittenList(kittenDataList);
-    
-
+    addNewKittenserver (newKittenDataObject);
 }
+
+function addNewKittenserver (){
+    fetch(`https://dev.adalab.es/api/kittens/${GITHUB_USER}`, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(newKittenDataObject),
+        })
+        .then((response) => response.json())
+        .then((data) => {
+            //si se ha guardado bien en el sevidor me lo tiene que mostrar
+        if (data.success) {
+            kittenDataList.push(newKittenDataObject);
+            renderKittenList(kittenDataList);
+            console.log(data);
+            //Completa y/o modifica el código:
+            //Agrega el nuevo gatito al listado
+            //Guarda el listado actualizado en el local stoarge
+            //Visualiza nuevamente el listado de gatitos
+            //Limpia los valores de cada input
+        } else {
+            //muestra un mensaje de error.
+        
+        }
+        });
+}
+
+
 //Cancelar la búsqueda de un gatito
 function cancelNewKitten(event) {
     event.preventDefault();
@@ -139,7 +163,7 @@ function filterKitten(event) {
 
 const kittenListStored = JSON.parse(localStorage.getItem('kittensList'));
 
-const GITHUB_USER = '<BarbaraGB1>';
+const GITHUB_USER = '<lauragonzalezcalvo>';
 const SERVER_URL = `https://dev.adalab.es/api/kittens/${GITHUB_USER}`;
 let kittenDataList =[];
 //Peticiones al servidor 
@@ -158,10 +182,12 @@ fetch(SERVER_URL, {
     console.log(kittenDataList)
     renderKittenList(kittenDataList);
     localStorage.setItem('kittensList', JSON.stringify( kittenDataList));
-   }
-  )
+    
+})
+    .catch((error) => {
+     console.error(error);
+});
 }
-
 
 //Eventos
 linkNewFormElememt.addEventListener("click", handleClickNewCatForm);
